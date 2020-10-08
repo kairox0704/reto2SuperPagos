@@ -1,12 +1,12 @@
 <template>
   <div>
-      <h1>numero {{$store.state.numero = this.todos}}</h1>
-      <h1>{{$store.state.numero}}</h1>
+      <h1 v-for="(item,index) in apiStore" :key="index">{{item}}</h1>
   </div>
 </template>
 
 <script>
 import axios from'axios'
+import { mapState, mapMutations } from "vuex"
 export default {
   name: 'api',
   data(){
@@ -22,12 +22,15 @@ export default {
       axios.get
       ('https://www.datos.gov.co/resource/gt2j-8ykr.json')
       .then( Response =>{
-        console.log(this.todos)
         this.todos = Response.data
+        this.CargarApi(this.todos)
       })
       .catch( e=> console.log(e))
-
-    }
+    },
+    ...mapMutations('apiStore',['CargarApi'])
+  },
+  computed:{
+      ...mapState('apiStore',['apiStore'])
   }
 }
 </script>
