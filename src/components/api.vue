@@ -18,6 +18,7 @@ export default {
   },
   mounted(){
     this.getTodos();
+    this.intervalo();
   },
   methods: {
     getTodos(){
@@ -71,7 +72,12 @@ export default {
     ...mapMutations('apiStore',['CargarApi']),
     ...mapMutations('apiStore',['CargarListasC']),
     ...mapMutations('apiStore',['CargarListasE']),
-    ...mapMutations('apiStore',['CargarListasS'])
+    ...mapMutations('apiStore',['CargarListasS']),
+    intervalo(){
+      setInterval(function(){
+        this.getTodos()
+      },600000)
+    }
   },
   computed:{
       ...mapState('apiStore',['apiStore'])
