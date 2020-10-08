@@ -5,7 +5,7 @@ import api from '@/components/api'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
+  routes: [ 
     {
       path: '/',
       name: 'api',
