@@ -8,9 +8,21 @@ import router from './router'
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
+const store = new Vuex.Store({
+  state: {
+    numero: 10
+  },
+  mutations:{
+    aumentar(state){
+      state.numero ++
+    }
+  }
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
