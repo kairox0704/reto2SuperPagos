@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 v-for="(item,index) in apiStore" :key="index">{{item}}</h1>
   </div>
 </template>
 
