@@ -75,7 +75,7 @@ export default {
     ...mapMutations('apiStore',['CargarListasS']),
     intervalo(){
       setInterval(function(){
-        this.getTodos()
+        getTodos()
       },600000)
     }
   },
