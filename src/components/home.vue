@@ -21,8 +21,10 @@
 import api from './api'
 import axios from'axios'
 import { mapState, mapMutations, mapGetters } from "vuex"
+
 export default {
     name: 'home',
+
     data(){
         return{
             listFilterC : [],
@@ -38,7 +40,8 @@ export default {
             contG:0,
             graf : null,
             listaG : [],
-            aux : null
+            aux : null,
+            myWorker: null
         }
     },
     components:{
@@ -106,7 +109,6 @@ export default {
                 this.contE = 0;
                 this.contS = 0;
             }
-            
         },
         eliminarFiltro(){
             this.listFilterC.splice(this.listFilterC.indexOf(this.filtroC),1)
@@ -117,7 +119,11 @@ export default {
             this.listFilterR.splice(this.listFilterR.indexOf(this.filtroE),1)
             this.listFilterR.splice(this.listFilterR.indexOf(this.filtroS),1)
 
+
             this.agregarFiltro(false)
+        },
+        mostrar(){
+            console.log(this.listaG)
         }
     }
 }
