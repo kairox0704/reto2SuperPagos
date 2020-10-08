@@ -18,6 +18,11 @@ export default{
         CargarListasS(state,payload){
             state.apiListS = payload
         }
+    },
+    getters:{
+        devolverApi: state => {
+            return state.apiStore
+        }
     }
 }
 
