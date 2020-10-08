@@ -6,13 +6,38 @@
         <input type = "text" v-model="filtroS">
         <button @click="agregarFiltro(true)">agregar</button>
         <button @click="eliminarFiltro">eliminar</button>
+        <button  @click="ventana=true">nueva tarea</button>
+        
+        <div v-if="ventana">
+            <form action="text">
+                <div>
+                    <label>Id  </label>
+                <input type = "text" v-model="ValID">                
+                </div>
+                 <div>
+                    <label>Ciudad</label>
+                    <input type = "text" v-model="ValCiudad">   
+                </div>
+                <div>
+                    <label>Estado</label>
+                    <input type = "text" v-model="ValEstado">   
+                </div>
+                <div>
+                    <label>Sexo</label>
+                    <input type = "text" v-model="ValSexo">   
+                </div>
+                <input @click="guardar" @click.prevent="ventana=false" type="button" value="guardar">
+                <input @click="eliminar" @click.prevent="ventana=false" type="button" value="eliminar">
+                <input @click="actualizar" @click.prevent="ventana=false" type="button" value="actualizar">
+            </form>
+        </div>
     </div>
     <div>   
         <div v-for="(item1, index1) in listFilterR" :key=index1>{{item1}}</div>
     </div>
     <api/>
     <div v-for="(item, index) in listaG" :key=index>
-       {{item.ciudad_de_ubicaci_n}} {{item.estado}}  {{item.sexo}} 
+      {{item.id_de_caso}} {{item.ciudad_de_ubicaci_n}} {{item.estado}}  {{item.sexo}} 
     </div>
   </div>
 </template>
@@ -41,7 +66,13 @@ export default {
             graf : null,
             listaG : [],
             aux : null,
-            myWorker: null
+            myWorker: null,
+            ventana : true,
+            ValID : '',
+            ValCiudad : '',
+            ValEstado : '',
+            ValSexo : '',
+            nuevoD : []
         }
     },
     components:{
@@ -122,8 +153,31 @@ export default {
 
             this.agregarFiltro(false)
         },
-        mostrar(){
-            console.log(this.listaG)
+        guardar(){
+            this.nuevoD = this.aux[0];
+            this.nuevoD.ciudad_de_ubicaci_n = this.ValCiudad;
+            this.nuevoD.id_de_caso = this.aux.length
+            this.nuevoD.estado = this.ValEstado;
+            this.nuevoD.sexo = this.ValSexo;
+            this.aux.push(this.nuevoD);
+            this.agregarFiltro(false)
+        },
+        eliminar(){
+            this.listFilterS.splice(this.ValID,1)
+            this.agregarFiltro(false)
+        },
+        actualizar(){
+            this.nuevoD = this.aux[this.ValID];
+            if(this.ValCiudad != ''){
+                this.nuevoD.ciudad_de_ubicaci_n = this.ValCiudad;
+            } 
+            if(this.ValCiudad != ''){
+                this.nuevoD.estado = this.ValEstado;
+            } 
+            if(this.ValCiudad != ''){
+                this.nuevoD.sexo = this.ValSexo;
+            } 
+            this.agregarFiltro(false)
         }
     }
 }
