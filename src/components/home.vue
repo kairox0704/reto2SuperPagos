@@ -1,43 +1,80 @@
 <template>
-  <div>
+  <div class="container">
     <div >
-        <input type = "text" v-model="filtroC">
-        <input type = "text" v-model="filtroE">
-        <input type = "text" v-model="filtroS">
+       
+        <button class="btn btn-success margin: 0 auto;" type="button" @click="agregarFiltro(true)">Inicializar</button>
+        
+        <input id="InC" type = "text" v-model="filtroC">
+        <input id="InE" type = "text" v-model="filtroE">
+        <input id="InS" type = "text" v-model="filtroS">
         <button @click="agregarFiltro(true)">agregar</button>
         <button @click="eliminarFiltro">eliminar</button>
-        <button  @click="ventana=true">nueva tarea</button>
-        
-        <div v-if="ventana">
-            <form action="text">
-                <div>
-                    <label>Id  </label>
-                <input type = "text" v-model="ValID">                
-                </div>
-                 <div>
-                    <label>Ciudad</label>
-                    <input type = "text" v-model="ValCiudad">   
-                </div>
-                <div>
-                    <label>Estado</label>
-                    <input type = "text" v-model="ValEstado">   
-                </div>
-                <div>
-                    <label>Sexo</label>
-                    <input type = "text" v-model="ValSexo">   
-                </div>
-                <input @click="guardar" @click.prevent="ventana=false" type="button" value="guardar">
-                <input @click="eliminar" @click.prevent="ventana=false" type="button" value="eliminar">
-                <input @click="actualizar" @click.prevent="ventana=false" type="button" value="actualizar">
-            </form>
-        </div>
-    </div>
-    <div>   
-        <div v-for="(item1, index1) in listFilterR" :key=index1>{{item1}}</div>
+        <button @click="ventana=true">Formulario Parciente</button>
     </div>
     <api/>
-    <div v-for="(item, index) in listaG" :key=index>
-      {{item.id_de_caso}} {{item.ciudad_de_ubicaci_n}} {{item.estado}}  {{item.sexo}} 
+    <div div class="container">
+        <div class="row">
+            <div class="col-md-6 col-xs-12">
+                <h1>Filtros</h1>
+                <form action="text">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr v-for="(item1, index1) in listFilterR" :key=index1>
+                                <th>{{item1}}</th>
+                            </tr> 
+                        </tbody>
+                    </table>
+                </form>
+                
+                <div v-if="ventana">
+                    <h1>Informacion</h1>
+                    <form action="text">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>ID</th>
+                                <th><input type = "text" v-model="ValID"> </th>
+                            </tr>
+                            <tr>
+                                <th>Ciudad</th>
+                                <th><input type = "text" v-model="ValCiudad"> </th>
+                            </tr>
+                            <tr>
+                                <th>Estado</th>
+                                <th><input type = "text" v-model="ValEstado"></th>
+                            </tr>
+                            <tr>
+                                <th>Sexo</th>
+                                <th><input type = "text" v-model="ValSexo"></th>
+                            </tr>
+                        </table>
+                        <input @click="guardar" @click.prevent="ventana=false" type="button" value="guardar">
+                        <input @click="eliminar" @click.prevent="ventana=false" type="button" value="eliminar">
+                        <input @click="actualizar" @click.prevent="ventana=false" type="button" value="actualizar">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <h1>Lista De pacientes</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ciudad</th>
+                            <th>Estado</th>
+                            <th>Sexo</th>
+                        </tr>
+                    </thead>
+                    <tbody>    
+                    <tr v-for="(item, index) in listaG" :key=index> 
+                            <th>{{item.id_de_caso}}</th>
+                            <th>{{item.ciudad_de_ubicaci_n}}</th>
+                            <th>{{item.estado}}</th>
+                            <th>{{item.sexo}}</th>   
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
   </div>
 </template>
@@ -67,7 +104,7 @@ export default {
             listaG : [],
             aux : null,
             myWorker: null,
-            ventana : true,
+            ventana : false,
             ValID : '',
             ValCiudad : '',
             ValEstado : '',
@@ -86,7 +123,9 @@ export default {
     },
     methods:{
         agregarFiltro(e){
-            this.aux = this.devolverApi
+            if(e){
+                this.aux = this.devolverApi
+            }
             this.listaG = [];
             if(e){
                 if(this.filtroC != ''){
@@ -140,6 +179,9 @@ export default {
                 this.contE = 0;
                 this.contS = 0;
             }
+            this.filtroC = ''
+            this.filtroE = ''
+            this.filtroS = ''
         },
         eliminarFiltro(){
             this.listFilterC.splice(this.listFilterC.indexOf(this.filtroC),1)
@@ -154,31 +196,44 @@ export default {
             this.agregarFiltro(false)
         },
         guardar(){
-            this.nuevoD = this.aux[0];
+            this.nuevoD.id_de_caso = (this.aux.length + 1);
             this.nuevoD.ciudad_de_ubicaci_n = this.ValCiudad;
-            this.nuevoD.id_de_caso = this.aux.length
             this.nuevoD.estado = this.ValEstado;
             this.nuevoD.sexo = this.ValSexo;
             this.aux.push(this.nuevoD);
-            this.agregarFiltro(false)
+            this.agregarFiltro(true)
         },
         eliminar(){
-            this.listFilterS.splice(this.ValID,1)
-            this.agregarFiltro(false)
+            this.aux.splice(this.ValID-1,1)
+            this.CargarApi(this.aux)
+            this.agregarFiltro(true)
         },
         actualizar(){
-            this.nuevoD = this.aux[this.ValID];
-            if(this.ValCiudad != ''){
-                this.nuevoD.ciudad_de_ubicaci_n = this.ValCiudad;
-            } 
-            if(this.ValCiudad != ''){
-                this.nuevoD.estado = this.ValEstado;
-            } 
-            if(this.ValCiudad != ''){
-                this.nuevoD.sexo = this.ValSexo;
-            } 
+            var salida = true;
+            var i = 0;
+            while (salida) {
+                if(this.aux[i].id_de_caso === this.ValID){
+                    if(this.ValCiudad != ''){
+                        this.aux[i].ciudad_de_ubicaci_n = this.ValCiudad;
+                        salida = false;
+                    } 
+                    if(this.ValEstado != ''){
+                        this.aux[i].estado = this.ValEstado;
+                        salida = false;
+                    } 
+                    if(this.ValSexo != ''){
+                        this.aux[i].sexo = this.ValSexo;
+                        salida = false;
+                    } 
+                }
+                i++;
+                if(this.aux.length<=i){
+                    salida = true;
+                }
+            }
             this.agregarFiltro(false)
-        }
+        },
+        ...mapMutations('apiStore',['CargarApi'])
     }
 }
 </script>
